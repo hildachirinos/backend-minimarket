@@ -43,7 +43,7 @@ public class ProveedorController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping(path = "update", consumes = "multipart/form-data")
+    @PostMapping(path = "update", consumes = "multipart/form-data")
     public ResponseEntity<ResponseProveedorInsert> update(@ModelAttribute RequestProveedorInsert request) {
         ResponseProveedorInsert response = new ResponseProveedorInsert();
 

@@ -43,7 +43,7 @@ public class CategoriaController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping(path = "update", consumes = "multipart/form-data")
+    @PostMapping(path = "update", consumes = "multipart/form-data")
     public ResponseEntity<ResponseCategoriaInsert> update(@ModelAttribute RequestCategoriaInsert request) {
         ResponseCategoriaInsert response = new ResponseCategoriaInsert();
 

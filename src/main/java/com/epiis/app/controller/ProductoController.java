@@ -43,7 +43,7 @@ public class ProductoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping(path = "update", consumes = "multipart/form-data")
+    @PostMapping(path = "update", consumes = "multipart/form-data")
     public ResponseEntity<ResponseProductoInsert> update(@ModelAttribute RequestProductoInsert request) {
         ResponseProductoInsert response = new ResponseProductoInsert();
 

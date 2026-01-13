@@ -18,19 +18,25 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
+	private final JwtProperties jwtProperties;
+
+	public JwtService(JwtProperties jwtProperties) {
+		this.jwtProperties = jwtProperties;
+	}
+
 	public String generateToken(Map<String, String> userDetails) {
 		return generateToken(new HashMap<>(), userDetails);
 	}
 
 	public String generateToken(Map<String, Object> extraClaims, Map<String, String> userDetails) {
 		return Jwts
-			.builder()
-			.setClaims(extraClaims)
-			.setSubject(userDetails.get("userName"))
-			.setIssuedAt(new Date(System.currentTimeMillis()))
-			.setExpiration(new Date(System.currentTimeMillis() + JwtProperties.timeAuthMs))
-			.signWith(getSignInKey(), SignatureAlgorithm.HS256)
-			.compact();
+				.builder()
+				.setClaims(extraClaims)
+				.setSubject(userDetails.get("userName"))
+				.setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis() + jwtProperties.getTimeAuthMs()))
+				.signWith(getSignInKey(), SignatureAlgorithm.HS256)
+				.compact();
 	}
 
 	public String extractUsername(String token) {
@@ -45,11 +51,11 @@ public class JwtService {
 
 	private Claims extractAllClaims(String token) {
 		return Jwts
-			.parserBuilder()
-			.setSigningKey(getSignInKey())
-			.build()
-			.parseClaimsJws(token)
-			.getBody();
+				.parserBuilder()
+				.setSigningKey(getSignInKey())
+				.build()
+				.parseClaimsJws(token)
+				.getBody();
 	}
 
 	public boolean isTokenValid(String token, Map<String, String> userDetails) {
@@ -67,7 +73,7 @@ public class JwtService {
 	}
 
 	private Key getSignInKey() {
-		byte[] keyBytes = Decoders.BASE64.decode(JwtProperties.secretKey);
+		byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecretKey());
 
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
